@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TSC Sumter SC | Internal Project Status</title>
+<style>
+html,body{margin:0;padding:0;background:#eef1f4;color:#152234;}
+body{font-family:Arial,sans-serif;}
+:root{
+  --bdc-red:#bc2026;
+  --bdc-red-dark:#8f171c;
+  --bdc-ink:#152234;
+  --bdc-muted:#667386;
+  --bdc-rule:#cbd5df;
+  --bdc-amber:#a96f16;
+  --bdc-green:#237448;
+  --bdc-paper:#ffffff;
+}
+.wrapper{min-height:100vh;background:var(--bdc-paper);max-width:1240px;margin:0 auto;padding:0 32px 56px;}
+.topbar{height:5px;background:var(--bdc-red);margin:0 -32px 0;}
+.header{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;align-items:flex-end;padding:30px 0 22px;}
+h1{margin:0;font-family:Georgia,'Times New Roman',serif;font-size:48px;line-height:1;letter-spacing:-.035em;color:var(--bdc-ink);}
+h1 span{font-style:italic;color:var(--bdc-red);}
+.subtitle{font-size:14.5px;color:var(--bdc-muted);margin-top:6px;}
+.phase{display:flex;align-items:center;gap:10px;border:1px solid rgba(188,32,38,.32);background:#fff5f5;padding:8px 14px;font-family:'Courier New',monospace;font-size:12.5px;font-weight:700;letter-spacing:.1em;color:var(--bdc-ink);text-transform:uppercase;}
+.phase-dot{width:8px;height:8px;border-radius:50%;background:var(--bdc-red);}
+.rule{border-top:3px solid var(--bdc-ink);border-bottom:1px solid var(--bdc-rule);height:4px;}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));border-bottom:1px solid var(--bdc-rule);margin:0 -20px;}
+.tile{padding:20px;border-right:1px solid var(--bdc-rule);display:flex;flex-direction:column;gap:7px;}
+.tile:last-child{border-right:none;}
+.t-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--bdc-muted);}
+.t-value{font-family:'Courier New',monospace;font-size:27px;font-weight:700;color:var(--bdc-ink);}
+.t-note{font-size:12.5px;color:var(--bdc-muted);}
+.green{color:var(--bdc-green);font-weight:700;}
+.amber{color:var(--bdc-amber);font-weight:700;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(490px,1fr));gap:0 56px;align-items:start;}
+.section{display:flex;flex-direction:column;}
+.section-head{display:flex;align-items:baseline;gap:12px;padding:26px 0 12px;border-bottom:2px solid var(--bdc-rule);}
+.section-num{font-family:'Courier New',monospace;font-size:12px;font-weight:700;color:var(--bdc-red);}
+.section-title{font-size:15px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--bdc-ink);}
+.item{display:flex;gap:16px;padding:15px 0;border-bottom:1px solid var(--bdc-rule);align-items:baseline;}
+.item-no{font-family:'Courier New',monospace;font-size:13px;color:var(--bdc-red);font-weight:700;min-width:22px;}
+.item-body{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0;}
+.item-title{font-size:14.5px;font-weight:700;color:var(--bdc-ink);}
+.item-text{font-size:13px;color:var(--bdc-muted);}
+.item-tag{font-family:'Courier New',monospace;font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--bdc-red);white-space:nowrap;}
+.table-head,.row{display:grid;grid-template-columns:minmax(0,1fr) minmax(84px,112px) minmax(110px,140px);gap:0 14px;align-items:baseline;}
+.table-head{padding:10px 0 8px;border-bottom:1px solid var(--bdc-rule);font-family:'Courier New',monospace;font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--bdc-muted);}
+.row{padding:13px 0;border-bottom:1px solid var(--bdc-rule);font-size:14px;}
+.r-main{color:var(--bdc-ink);min-width:0;}
+.r-due{font-family:'Courier New',monospace;font-size:12.5px;color:#465466;}
+.r-status{font-family:'Courier New',monospace;font-size:11px;font-weight:700;letter-spacing:.06em;}
+.next{color:var(--bdc-red);} .queued{color:#6a7687;} .waiting{color:var(--bdc-red-dark);} .recurring{color:#6a7687;}
+.risk{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--bdc-rule);}
+.risk-level{font-family:'Courier New',monospace;font-size:11px;font-weight:700;letter-spacing:.08em;min-width:54px;padding-top:2px;}
+.high{color:var(--bdc-red-dark);} .watch{color:var(--bdc-amber);} .info{color:var(--bdc-green);}
+.risk-body{display:flex;flex-direction:column;gap:4px;}
+.risk-title{font-size:14px;font-weight:700;color:var(--bdc-ink);}
+.risk-text{font-size:13px;color:var(--bdc-muted);}
+.contacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0;border-top:1px solid var(--bdc-rule);border-left:1px solid var(--bdc-rule);margin-top:8px;}
+.contact{padding:18px 16px;border-right:1px solid var(--bdc-rule);border-bottom:1px solid var(--bdc-rule);}
+.contact-role{font-family:'Courier New',monospace;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--bdc-red);margin-bottom:10px;}
+.contact-name{font-size:22px;font-weight:700;color:var(--bdc-ink);margin-bottom:6px;}
+.contact-org,.contact-line{font-size:13px;color:var(--bdc-muted);line-height:1.45;}
+@page{size:ledger landscape;margin:.28in;}
+@media print{
+  html,body{background:#fff!important;print-color-adjust:exact;-webkit-print-color-adjust:exact;}
+  body{zoom:.9;}
+  .wrapper{max-width:none;padding:0 18px 18px;}
+  h1{font-size:37px;}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 34px;}
+  .tiles{grid-template-columns:repeat(6,minmax(0,1fr));}
+  .tile{padding:13px;}
+  .item,.row,.risk{padding-top:9px;padding-bottom:9px;}
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="topbar"></div>
+  <div class="header">
+    <div>
+      <h1>TSC <span>Sumter</span></h1>
+      <div class="subtitle">28 Pack Rd., Sumter, SC 29150 · Tractor Supply Company · internal status / pre-mobilization</div>
+    </div>
+    <div class="phase"><div class="phase-dot"></div>PRE-CONSTRUCTION · KICKOFF COMPLETE</div>
+  </div>
+  <div class="rule"></div>
+
+  <div class="tiles">
+    <div class="tile">
+      <div class="t-label">Construction Start</div>
+      <div class="t-value">08/17/26</div>
+      <div class="t-note">Controlling start date</div>
+    </div>
+    <div class="tile">
+      <div class="t-label">Revised LAC</div>
+      <div class="t-value">02/15/27</div>
+      <div class="t-note">NTP-driven schedule</div>
+    </div>
+    <div class="tile">
+      <div class="t-label">Fixture Date</div>
+      <div class="t-value">03/14/27</div>
+      <div class="t-note">TSC target</div>
+    </div>
+    <div class="tile">
+      <div class="t-label">Land Closing</div>
+      <div class="t-value">07/30/26</div>
+      <div class="t-note green">Still scheduled</div>
+    </div>
+    <div class="tile">
+      <div class="t-label">Building Permit</div>
+      <div class="t-value amber">OPEN</div>
+      <div class="t-note">After-closing follow-through</div>
+    </div>
+    <div class="tile">
+      <div class="t-label">DOT Bond &amp; Permit</div>
+      <div class="t-value green">IN HAND</div>
+      <div class="t-note">No open DOT item</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="section">
+      <div class="section-head"><div class="section-num">01</div><div class="section-title">This Week's Priorities</div></div>
+      <div class="item"><div class="item-no">1.</div><div class="item-body"><div class="item-title">Advance Land Disturbance Permit</div><div class="item-text">Reach out to Debbie Rauch in permitting and move the application path forward.</div></div><div class="item-tag">THIS WEEK</div></div>
+      <div class="item"><div class="item-no">2.</div><div class="item-body"><div class="item-title">Confirm pre-mobilization deliverables</div><div class="item-text">COI, superintendent, baseline Gantt, submittal schedule, SWPPP readiness, and utility coordination plan.</div></div><div class="item-tag">THIS WEEK</div></div>
+      <div class="item"><div class="item-no">3.</div><div class="item-body"><div class="item-title">Track Paramounte SWPPP pre-construction conference</div><div class="item-text">Alec is to schedule the pre-conference with Paramounte regarding the SWPPP.</div></div><div class="item-tag">THIS WEEK</div></div>
+      <div class="item"><div class="item-no">4.</div><div class="item-body"><div class="item-title">Track building permit after closing</div><div class="item-text">Permit-after-closing remains the main approval follow-through item.</div></div><div class="item-tag queued">RECURRING</div></div>
+      <div class="item"><div class="item-no">5.</div><div class="item-body"><div class="item-title">Flag Sumter business-license requirement early</div><div class="item-text">Subs will need Sumter business licenses as a requirement for CO.</div></div><div class="item-tag queued">QUEUED</div></div>
+
+      <div class="section-head" style="padding-top:34px;"><div class="section-num">02</div><div class="section-title">Action Items</div></div>
+      <div class="table-head"><div>ACTION</div><div>DUE</div><div>STATUS</div></div>
+      <div class="row"><div class="r-main">Reach out to Debbie Rauch regarding Land Disturbance Permit</div><div class="r-due">ASAP</div><div class="r-status next">■ NEXT</div></div>
+      <div class="row"><div class="r-main">Confirm superintendent assignment</div><div class="r-due">Before start</div><div class="r-status waiting">■ OPEN</div></div>
+      <div class="row"><div class="r-main">Confirm Alec schedules Paramounte SWPPP pre-conference</div><div class="r-due">Before start</div><div class="r-status queued">□ QUEUED</div></div>
+      <div class="row"><div class="r-main">Track building permit after closing</div><div class="r-due">After closing</div><div class="r-status recurring">↻ RECURRING</div></div>
+      <div class="row"><div class="r-main">Flag sub business-license requirement for CO</div><div class="r-due">Before CO</div><div class="r-status queued">□ QUEUED</div></div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><div class="section-num">03</div><div class="section-title">Risks &amp; Watch Items</div></div>
+      <div class="risk"><div class="risk-level high">HIGH</div><div class="risk-body"><div class="risk-title">Land Disturbance Permit still needs to be advanced</div><div class="risk-text">Early-work/site-start path can slip if permitting does not move quickly.</div></div></div>
+      <div class="risk"><div class="risk-level watch">WATCH</div><div class="risk-body"><div class="risk-title">Building permit remains open after closing</div><div class="risk-text">Land closing is still scheduled for 07/30/26, but building permit follow-through remains active.</div></div></div>
+      <div class="risk"><div class="risk-level watch">WATCH</div><div class="risk-body"><div class="risk-title">No superintendent assigned yet</div><div class="risk-text">Startup coordination remains incomplete until superintendent is identified.</div></div></div>
+      <div class="risk"><div class="risk-level info">INFO</div><div class="risk-body"><div class="risk-title">DOT bond and permit are in hand</div><div class="risk-text">Not a current constraint.</div></div></div>
+      <div class="risk"><div class="risk-level watch">WATCH</div><div class="risk-body"><div class="risk-title">Sub business licenses required for CO</div><div class="risk-text">Need early compliance tracking to avoid closeout / CO delay.</div></div></div>
+
+      <div class="section-head" style="padding-top:34px;"><div class="section-num">04</div><div class="section-title">Recent Confirmed Activity</div></div>
+      <div class="item"><div class="item-no">07/15</div><div class="item-body"><div class="item-title">NTP issued</div><div class="item-text">Start date set at 08/17/26 and revised LAC at 02/15/27.</div></div></div>
+      <div class="item"><div class="item-no">07/16–17</div><div class="item-body"><div class="item-title">Special inspections owner acknowledgment filed</div><div class="item-text">Oxford signed/sealed complete; permit-support path materially improved.</div></div></div>
+      <div class="item"><div class="item-no">07/27</div><div class="item-body"><div class="item-title">Pre-kickoff complete with Alec</div><div class="item-text">Dropbox folder with IFC drawings and 16 other documents shared during the meeting.</div></div></div>
+    </div>
+  </div>
+
+  <div class="section-head" style="padding-top:34px;"><div class="section-num">05</div><div class="section-title">Key Internal Contacts</div></div>
+  <div class="contacts">
+    <div class="contact"><div class="contact-role">Landlord's Rep / PM</div><div class="contact-name">Buck Culbreth</div><div class="contact-org">Baseline Development Companies, LLC</div><div class="contact-line">buck@baselinedevelopment.com</div><div class="contact-line">919 · 222 · 6063</div></div>
+    <div class="contact"><div class="contact-role">General Contractor PM</div><div class="contact-name">Alec Villafana</div><div class="contact-org">DooleyMack Constructors of South Carolina</div><div class="contact-line">avillafana@dooleymacksc.com</div><div class="contact-line">843 · 830 · 8960</div></div>
+
+    <div class="contact"><div class="contact-role">Tenant PM</div><div class="contact-name">Paul Rondeau</div><div class="contact-org">Tractor Supply Company</div><div class="contact-line">prondeau@TractorSupply.com</div><div class="contact-line">813 · 298 · 2620</div></div>
+  </div>
+</div>
+</body>
+</html>
